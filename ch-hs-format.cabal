@@ -1,0 +1,26 @@
+cabal-version:
+  2.0
+name:
+  ch-hs-format
+build-type:
+  Simple
+version:
+  1.0.0
+
+executable ch-hs-format
+  build-depends:
+    base,
+    containers,
+    ghc,
+    ghc-exactprint,
+    optparse-applicative
+  main-is:
+    Main.hs
+  other-modules:
+    CircuitHub.HsFormat
+    CircuitHub.HsFormat.ModuleDeclaration
+    CircuitHub.HsFormat.ModulePragmas
+  hs-source-dirs:
+    src
+  ghc-options:
+    -Wall
