@@ -16,6 +16,8 @@ import qualified Options.Applicative as OptParse
 import CircuitHub.HsFormat
 import CircuitHub.HsFormat.ModulePragmas
 import CircuitHub.HsFormat.ModuleDeclaration
+import CircuitHub.HsFormat.TopLevelDeclarations
+
 
 newtype Arguments =
   Arguments
@@ -59,12 +61,11 @@ mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> d
   writeFile inputFilePath ( exactPrint formatted anns' )
 
 
-
-
 formatTopDown :: forall a. Data a => Formatter a
 formatTopDown =
   tryAndFormat formatLanguagePragmas
     >=> tryAndFormat moduleDecl
+    >=> tryAndFormat topLevelDeclarations
     >=>
       -- Continue formatting children
       gmapM formatTopDown
