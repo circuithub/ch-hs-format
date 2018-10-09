@@ -11,6 +11,7 @@ group type signatures).
 
 module CircuitHub.HsFormat.TopLevelDeclarations ( topLevelDeclarations ) where
 
+import Control.Monad
 import SrcLoc
 import Data.List.NonEmpty ( NonEmpty(..) )
 import HsSyn
@@ -22,6 +23,11 @@ import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..) )
 
 topLevelDeclarations :: Formatter ( HsModule GhcPs )
 topLevelDeclarations hsModule = do
+  zipWithM_
+    balanceComments
+    ( hsmodDecls hsModule )
+    ( tail ( hsmodDecls hsModule ) )
+
   for_ ( groupDeclarations ( hsmodDecls hsModule ) ) $ \declGroup ->
     case declGroup of
       a :| as -> do
