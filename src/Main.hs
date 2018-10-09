@@ -3,7 +3,6 @@
 {-# language NamedFieldPuns #-}
 {-# language RecordWildCards #-}
 {-# language ScopedTypeVariables #-}
-{-# language TypeApplications #-}
 
 module Main where
 
@@ -18,9 +17,9 @@ import CircuitHub.HsFormat
 import CircuitHub.HsFormat.ModulePragmas
 import CircuitHub.HsFormat.ModuleDeclaration
 
-data Arguments =
+newtype Arguments =
   Arguments
-    { inputFilePaths :: ![ FilePath ]
+    { inputFilePaths :: [ FilePath ]
     }
 
 

@@ -4,7 +4,7 @@
 
 module CircuitHub.HsFormat ( Formatter, mapAnnotation, tryAndFormat ) where
 
-
+import Control.Monad ( (>=>) )
 import Data.Foldable ( for_ )
 import qualified Data.Map.Strict as Map
 import SrcLoc (Located)
@@ -20,8 +20,9 @@ mapAnnotation f x = do
   anns <-
     getAnnsT
 
-  for_ ( Map.lookup annKey anns ) $ \ann ->
-    f ann >>= modifyAnnsT . Map.insert annKey
+  for_
+    ( Map.lookup annKey anns )
+    ( f >=> modifyAnnsT . Map.insert annKey )
 
   return x
 
