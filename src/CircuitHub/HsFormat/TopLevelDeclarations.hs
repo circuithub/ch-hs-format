@@ -11,6 +11,7 @@ group type signatures).
 
 module CircuitHub.HsFormat.TopLevelDeclarations ( topLevelDeclarations ) where
 
+import Data.List
 import Control.Monad
 import SrcLoc
 import Data.List.NonEmpty ( NonEmpty(..) )
@@ -71,28 +72,22 @@ topLevelDeclarations hsModule = do
   return hsModule
 
 
-groupDeclarations :: Eq (IdP pass) => [GenLocated l (HsDecl pass)] -> [NonEmpty (GenLocated l (HsDecl pass))]
+groupDeclarations :: Eq (IdP pass) => [Located (HsDecl pass)] -> [NonEmpty (Located (HsDecl pass))]
 groupDeclarations [] =
   []
 groupDeclarations ( x : xs ) =
   finish
   ( foldl
     ( \st@( groups, groupStart :| gs ) decl ->
-        case ( groupStart, decl ) of
-          ( L _ ( SigD s ), L _ ( ValD b ) ) | b `bindMatches` s ->
-            ( groups
-            , groupStart :| ( gs ++ [ decl ] )
-            )
+        if not ( null ( intersect ( namesOf groupStart ) ( namesOf decl ) ) ) then
+          ( groups
+          , groupStart :| ( gs ++ [ decl ] )
+          )
 
-          ( L _ ( ValD FunBind{ fun_id = L _ n1 } ), L _ ( ValD FunBind{ fun_id = L _ n2 } ) ) | n1 == n2 ->
-            ( groups
-            , groupStart :| ( gs ++ [ decl ] )
-            )
-
-          _ ->
-            ( finish st
-            , pure decl
-            )
+        else
+          ( finish st
+          , pure decl
+          )
     )
     ( [], pure x )
     xs )
@@ -103,10 +98,16 @@ groupDeclarations ( x : xs ) =
       groups ++ [ g :| gs ]
 
 
-bindMatches :: (Eq (IdP pass), IdP idL ~ IdP pass) => HsBindLR idL idR -> Sig pass -> Bool
-bindMatches ( FunBind{ fun_id } ) ( TypeSig names _ ) =
-  unLoc fun_id `elem` map unLoc names
-bindMatches ( VarBind{ var_id } ) ( TypeSig names _ ) =
-  var_id `elem` map unLoc names
-bindMatches _ _ =
-  False
+namesOf :: Located ( HsDecl pass ) -> [ IdP pass ]
+namesOf ( L _ ( SigD ( TypeSig names _ ) ) ) =
+  map unLoc names
+namesOf ( L _ ( SigD ( InlineSig ( L _ name ) _ ) ) ) =
+  [ name ]
+namesOf ( L _ ( SigD ( SpecSig ( L _ name ) _ _ ) ) ) =
+  [ name ]
+namesOf ( L _ ( ValD FunBind{ fun_id } ) ) =
+  [ unLoc fun_id ]
+namesOf ( L _ ( ValD VarBind{ var_id } ) ) =
+  [ var_id ]
+namesOf _ =
+  []
