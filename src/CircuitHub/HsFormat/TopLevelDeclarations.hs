@@ -1,5 +1,6 @@
 {-# language FlexibleContexts #-}
 {-# language GADTs #-}
+{-# language LambdaCase #-}
 {-# language NamedFieldPuns #-}
 
 {-|
@@ -62,12 +63,10 @@ topLevelDeclarations hsModule = do
     ( hsmodDecls hsModule )
     ( tail ( hsmodDecls hsModule ) )
 
-  for_ ( groupDeclarations ( hsmodDecls hsModule ) ) $ \declGroup ->
-    case declGroup of
-      a :| as -> do
-        setEntryDPT a ( DP ( 3, 0 ) )
+  for_ ( groupDeclarations ( hsmodDecls hsModule ) ) $ \( a :| as ) -> do
+    setEntryDPT a ( DP ( 3, 0 ) )
 
-        for_ as ( `setEntryDPT` ( DP ( 1, 0 ) ) )
+    for_ as ( `setEntryDPT` DP ( 1, 0 ) )
 
   return hsModule
 
@@ -79,7 +78,7 @@ groupDeclarations ( x : xs ) =
   finish
   ( foldl
     ( \st@( groups, groupStart :| gs ) decl ->
-        if not ( null ( intersect ( namesOf groupStart ) ( namesOf decl ) ) ) then
+        if not ( null ( namesOf groupStart `intersect` namesOf decl ) ) then
           ( groups
           , groupStart :| ( gs ++ [ decl ] )
           )
