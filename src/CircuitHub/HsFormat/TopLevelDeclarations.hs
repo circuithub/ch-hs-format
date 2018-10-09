@@ -23,6 +23,39 @@ import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..) )
 
 topLevelDeclarations :: Formatter ( HsModule GhcPs )
 topLevelDeclarations hsModule = do
+  -- Keep any comments attached to the very last import.
+  case ( hsmodImports hsModule, hsmodDecls hsModule ) of
+    ( _:_, a:_ ) ->
+      balanceComments ( last ( hsmodImports hsModule ) ) a
+
+    _ ->
+      return ()
+
+  {-
+
+  Keep trailing comments for declarations.
+
+  We want to prevent
+
+    x :: A
+      ...
+      where
+        foo = ... --bar
+
+    b :: B
+
+  Becoming
+
+    x :: A
+      ...
+      where
+        foo = ...
+
+    --bar
+    b :: B
+
+  -}
+
   zipWithM_
     balanceComments
     ( hsmodDecls hsModule )
