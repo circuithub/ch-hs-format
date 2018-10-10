@@ -12,8 +12,10 @@ import Data.Data
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( mkAnnKey )
 
+
 type Formatter a =
   a -> Transform a
+
 
 mapAnnotation :: (Data a, Monad m) => (Annotation -> TransformT m Annotation) -> Located a -> TransformT m (Located a)
 mapAnnotation f x = do
@@ -30,6 +32,7 @@ mapAnnotation f x = do
 
     annKey =
       mkAnnKey x
+
 
 tryAndFormat :: forall a b. ( Data a, Data b ) => Formatter b -> Formatter a
 tryAndFormat format a =
