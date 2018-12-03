@@ -19,11 +19,11 @@ import Language.Haskell.GHC.ExactPrint.Utils
 
 
 moduleDecl :: Formatter ( Located ( HsSyn.HsModule GhcPs ) )
-moduleDecl hsModule = do 
+moduleDecl hsModule = do
   for_
     ( HsSyn.hsmodExports ( unLoc hsModule ) )
     formatExports
-  
+
   mapAnnotation
     ( \ann ->
         let
@@ -92,7 +92,7 @@ formatExports lies = do
   for_ ( unLoc lies ) formatIE
 
   formatParens
-  
+
   where
 
     multiline =
@@ -106,15 +106,15 @@ formatExports lies = do
                 case kwid of
                   G AnnOpenP ->
                     ( kwid, DP ( 0, 0 ) )
-                
+
                   G AnnCloseP ->
                     ( kwid, DP ( if multiline then ( 1, 2 ) else ( 0, 1 ) ) )
-  
+
                   _ ->
                     ( kwid, dp )
             )
             ( annsDP ann )
-  
+
       in
       return ann { annsDP = annsDP' }
 
@@ -126,31 +126,31 @@ formatExports lies = do
                 case kwid of
                   G AnnOpenP ->
                     ( kwid, DP ( 0, 0 ) )
-                
+
                   G AnnCloseP ->
                     ( kwid, DP ( 0, 0 ) )
-  
+
                   _ ->
                     ( kwid, dp )
             )
             ( annsDP ann )
-  
+
       in
       return ann { annsDP = annsDP' }
 
     formatParens =
       mapAnnotation
-        ( \ann -> do
+        ( \ann ->
             case unLoc lies of
               _:_ ->
                 formatParensNonempty ann
-              
+
               [] ->
                 formatParensEmpty ann
         )
         lies
 
-    formatIE = do
+    formatIE =
       mapAnnotation
         ( \ann -> do
             let
@@ -167,13 +167,13 @@ formatExports lies = do
                 case annPriorComments ann of
                   [] ->
                     DP ( 0, 1 )
-  
+
                   _ ->
                     foldl
                       addDP
                       ( DP ( 1, 3 ) )
                       ( map snd ( annPriorComments ann ) )
-              
+
               annsDP' =
                 map
                   ( \( kwid, dp ) ->
@@ -185,12 +185,12 @@ formatExports lies = do
                             else
                               DP ( 0, 0 )
                           )
-                      
+
                         _ ->
                           ( kwid, dp )
                   )
                   ( annsDP ann )
-  
+
             return ann { annEntryDelta = entryDP, annsDP = annsDP' }
         )
 
