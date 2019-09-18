@@ -9,7 +9,7 @@ version:
 
 executable ch-hs-format
   build-depends:
-    base ^>= 4.12,
+    base ^>= 4.13,
     containers,
     ghc,
     ghc-exactprint,
