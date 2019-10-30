@@ -174,10 +174,10 @@ formatImport ( L loc i@HsSyn.ImportDecl{ ideclName, ideclHiding }) = do
 
 
 importName :: Located ( HsSyn.IE GhcPs ) -> ( Bool, Bool, RdrName )
-importName ( L _ ( HsSyn.IEVar name ) ) = wrappedName name
-importName ( L _ ( HsSyn.IEThingAbs name ) ) = wrappedName name
-importName ( L _ ( HsSyn.IEThingAll name ) ) = wrappedName name
-importName ( L _ ( HsSyn.IEThingWith name _ _ _ ) ) = wrappedName name
+importName ( L _ ( HsSyn.IEVar _ name ) ) = wrappedName name
+importName ( L _ ( HsSyn.IEThingAbs _ name ) ) = wrappedName name
+importName ( L _ ( HsSyn.IEThingAll _ name ) ) = wrappedName name
+importName ( L _ ( HsSyn.IEThingWith _ name _ _ _ ) ) = wrappedName name
 
 
 wrappedName :: Located ( HsSyn.IEWrappedName RdrName ) -> ( Bool, Bool, RdrName )

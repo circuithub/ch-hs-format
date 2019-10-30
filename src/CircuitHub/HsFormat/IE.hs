@@ -21,12 +21,12 @@ formatIE :: Formatter ( Located ( HsSyn.IE GhcPs ) )
 formatIE ie = do
   everything <-
     case ie of
-      L _ ( HsSyn.IEThingWith _ HsSyn.NoIEWildcard ns _ ) ->
+      L _ ( HsSyn.IEThingWith _ _ HsSyn.NoIEWildcard ns _ ) ->
         False <$ for_ ns ( `setEntryDPT` ( DP ( 0, 1 ) ) )
 
       _ ->
         return True
-  
+
   flip mapAnnotation ie $ \ann ->
     let
       annsDP' =
