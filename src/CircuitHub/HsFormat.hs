@@ -7,7 +7,7 @@ module CircuitHub.HsFormat ( Formatter, mapAnnotation, tryAndFormat ) where
 import Control.Monad ( (>=>) )
 import Data.Foldable ( for_ )
 import qualified Data.Map.Strict as Map
-import SrcLoc (Located)
+import SrcLoc ( Located )
 import Data.Data
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( mkAnnKey )

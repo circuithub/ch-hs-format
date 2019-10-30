@@ -7,7 +7,7 @@ import ApiAnnotation
 import CircuitHub.HsFormat
 import Data.Char
 import Data.Foldable ( for_ )
-import Data.List (sortOn)
+import Data.List ( sortOn )
 import Data.Maybe
 import Data.Traversable ( for )
 import FastString ( headFS )
@@ -15,9 +15,10 @@ import HsExtension ( GhcPs )
 import qualified HsSyn
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..) )
-import OccName (OccName, occNameString, isSymOcc, isDataOcc, occNameFS)
-import RdrName (RdrName, rdrNameOcc)
-import SrcLoc (Located, GenLocated(..), isOneLineSpan)
+import OccName ( OccName, isDataOcc, isSymOcc, occNameFS, occNameString )
+import RdrName ( RdrName, rdrNameOcc )
+import SrcLoc ( GenLocated(..), Located, isOneLineSpan )
+
 
 formatImport :: Formatter ( Located ( HsSyn.ImportDecl GhcPs ) )
 formatImport ( L loc i@HsSyn.ImportDecl{ ideclName, ideclHiding }) = do

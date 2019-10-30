@@ -5,17 +5,18 @@ module CircuitHub.HsFormat.IE where
 
 import CircuitHub.HsFormat
 
-import RdrName (rdrNameOcc)
-import OccName (occNameString)
+import RdrName ( rdrNameOcc )
+import OccName ( occNameString )
 import Data.Traversable ( for )
 import Data.Foldable ( for_ )
 import ApiAnnotation
 import HsExtension ( GhcPs )
-import SrcLoc (Located, GenLocated(..), isOneLineSpan)
+import SrcLoc ( GenLocated(..), Located, isOneLineSpan )
 import qualified HsSyn
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..) )
-import Data.List (sortOn)
+import Data.List ( sortOn )
+
 
 formatIE :: Formatter ( Located ( HsSyn.IE GhcPs ) )
 formatIE ie = do
