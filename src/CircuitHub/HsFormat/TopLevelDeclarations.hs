@@ -97,15 +97,15 @@ groupDeclarations ( x : xs ) =
 
 
 namesOf :: Located ( HsDecl pass ) -> [ IdP pass ]
-namesOf ( L _ ( SigD ( TypeSig names _ ) ) ) =
+namesOf ( L _ ( SigD _ ( TypeSig _ names _ ) ) ) =
   map unLoc names
-namesOf ( L _ ( SigD ( InlineSig ( L _ name ) _ ) ) ) =
+namesOf ( L _ ( SigD _ ( InlineSig _ ( L _ name ) _ ) ) ) =
   [ name ]
-namesOf ( L _ ( SigD ( SpecSig ( L _ name ) _ _ ) ) ) =
+namesOf ( L _ ( SigD _ ( SpecSig _ ( L _ name ) _ _ ) ) ) =
   [ name ]
-namesOf ( L _ ( ValD FunBind{ fun_id } ) ) =
+namesOf ( L _ ( ValD _ FunBind{ fun_id } ) ) =
   [ unLoc fun_id ]
-namesOf ( L _ ( ValD VarBind{ var_id } ) ) =
+namesOf ( L _ ( ValD _ VarBind{ var_id } ) ) =
   [ var_id ]
 namesOf _ =
   []
