@@ -18,6 +18,8 @@ executable ch-hs-format
     Main.hs
   other-modules:
     CircuitHub.HsFormat
+    CircuitHub.HsFormat.IE
+    CircuitHub.HsFormat.Import
     CircuitHub.HsFormat.ModuleDeclaration
     CircuitHub.HsFormat.ModulePragmas
     CircuitHub.HsFormat.TopLevelDeclarations

@@ -11,10 +11,10 @@ import CircuitHub.HsFormat
 import Data.Foldable ( for_ )
 import ApiAnnotation
 import HsExtension ( GhcPs )
-import SrcLoc (Located, getLoc, isOneLineSpan, unLoc)
+import SrcLoc ( Located, getLoc, isOneLineSpan, unLoc )
 import qualified HsSyn
 import Language.Haskell.GHC.ExactPrint
-import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..), Comment(..) )
+import Language.Haskell.GHC.ExactPrint.Types ( Comment(..), DeltaPos(..), KeywordId(..) )
 import Language.Haskell.GHC.ExactPrint.Utils
 
 

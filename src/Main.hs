@@ -14,6 +14,8 @@ import Language.Haskell.GHC.ExactPrint
 import qualified Options.Applicative as OptParse
 
 import CircuitHub.HsFormat
+import CircuitHub.HsFormat.IE
+import CircuitHub.HsFormat.Import
 import CircuitHub.HsFormat.ModulePragmas
 import CircuitHub.HsFormat.ModuleDeclaration
 import CircuitHub.HsFormat.TopLevelDeclarations
@@ -65,6 +67,8 @@ formatTopDown :: forall a. Data a => Formatter a
 formatTopDown =
   tryAndFormat formatLanguagePragmas
     >=> tryAndFormat moduleDecl
+    >=> tryAndFormat formatImport
+    >=> tryAndFormat formatIE
     >=> tryAndFormat topLevelDeclarations
     >=>
       -- Continue formatting children

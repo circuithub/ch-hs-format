@@ -16,10 +16,10 @@ import Data.Char
 import Data.List
 import Data.Either
 import HsExtension ( GhcPs )
-import SrcLoc (Located)
+import SrcLoc ( Located )
 import qualified HsSyn
 import Language.Haskell.GHC.ExactPrint
-import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..), Comment(..) )
+import Language.Haskell.GHC.ExactPrint.Types ( Comment(..), DeltaPos(..), KeywordId(..) )
 
 
 formatLanguagePragmas :: Formatter ( Located ( HsSyn.HsModule GhcPs ) )
