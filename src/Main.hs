@@ -11,6 +11,7 @@ import Data.Foldable ( for_ )
 import Control.Monad ( (>=>) )
 import Data.Data
 import Language.Haskell.GHC.ExactPrint
+import Language.Haskell.GHC.ExactPrint.Parsers ( parseModuleFromString )
 import qualified Options.Applicative as OptParse
 
 import CircuitHub.HsFormat
@@ -30,7 +31,7 @@ newtype Arguments =
 argumentsParser :: OptParse.Parser Arguments
 argumentsParser = do
   inputFilePaths <-
-    some
+    many
       ( OptParse.strArgument
           ( mconcat
               [ OptParse.metavar "FILE"
@@ -49,6 +50,21 @@ main =
 
 
 mainWith :: Arguments -> IO ()
+mainWith Arguments{ inputFilePaths = [] } =  do
+  contents <- getContents
+
+  ( anns, parsedSource ) <-
+    parseModuleFromString "stdin" contents
+      >>= either ( fail . show ) return
+
+  let
+    ( formatted, ( anns', _ ), logEntries ) =
+      runTransform anns ( formatTopDown parsedSource )
+
+  mapM_ putStrLn logEntries
+
+  putStr ( exactPrint formatted anns' )
+
 mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> do
   ( anns, parsedSource ) <-
     parseModule inputFilePath
