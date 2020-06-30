@@ -15,9 +15,9 @@ import CircuitHub.HsFormat
 import Data.Char
 import Data.List
 import Data.Either
-import HsExtension ( GhcPs )
+import GHC.Hs.Extension ( GhcPs )
 import SrcLoc ( Located )
-import qualified HsSyn
+import qualified GHC.Hs as HsSyn
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( Comment(..), DeltaPos(..), KeywordId(..) )
 

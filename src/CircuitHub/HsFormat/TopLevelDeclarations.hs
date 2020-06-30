@@ -15,7 +15,7 @@ import Data.List
 import Control.Monad
 import SrcLoc
 import Data.List.NonEmpty ( NonEmpty(..) )
-import HsSyn
+import GHC.Hs
 import CircuitHub.HsFormat
 import Data.Foldable
 import Language.Haskell.GHC.ExactPrint

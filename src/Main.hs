@@ -55,7 +55,7 @@ mainWith Arguments{ inputFilePaths = [] } =  do
 
   ( anns, parsedSource ) <-
     parseModuleFromString "stdin" contents
-      >>= either ( fail . show ) return
+      >>= either ( \_ -> fail "Could not parse" ) return
 
   let
     ( formatted, ( anns', _ ), logEntries ) =
@@ -68,7 +68,7 @@ mainWith Arguments{ inputFilePaths = [] } =  do
 mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> do
   ( anns, parsedSource ) <-
     parseModule inputFilePath
-      >>= either ( fail . show ) return
+      >>= either ( \_ -> fail "Failed to parse" ) return
 
   let
     ( formatted, ( anns', _ ), logEntries ) =

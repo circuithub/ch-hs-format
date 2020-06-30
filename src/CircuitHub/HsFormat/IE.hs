@@ -10,9 +10,9 @@ import OccName ( occNameString )
 import Data.Traversable ( for )
 import Data.Foldable ( for_ )
 import ApiAnnotation
-import HsExtension ( GhcPs )
+import GHC.Hs.Extension ( GhcPs )
 import SrcLoc ( GenLocated(..), Located, isOneLineSpan )
-import qualified HsSyn
+import qualified GHC.Hs as HsSyn
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..) )
 import Data.List ( sortOn )

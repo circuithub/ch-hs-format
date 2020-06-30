@@ -11,8 +11,8 @@ import Data.List ( sortOn )
 import Data.Maybe
 import Data.Traversable ( for )
 import FastString ( headFS )
-import HsExtension ( GhcPs )
-import qualified HsSyn
+import GHC.Hs.Extension ( GhcPs )
+import qualified GHC.Hs as HsSyn
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Types ( DeltaPos(..), KeywordId(..) )
 import OccName ( OccName, isDataOcc, isSymOcc, occNameFS, occNameString )
