@@ -188,3 +188,13 @@ wrappedName ( L _ ( HsSyn.IEName ( L _ name ) ) ) =
   , not ( isSymOcc ( rdrNameOcc name) )
   , name
   )
+wrappedName ( L _ ( HsSyn.IEType ( L _ name ) ) ) =
+  ( True
+  , not ( isSymOcc ( rdrNameOcc name) )
+  , name
+  )
+wrappedName ( L _ ( HsSyn.IEPattern ( L _ name ) ) ) =
+  ( False
+  , not ( isSymOcc ( rdrNameOcc name) )
+  , name
+  )
