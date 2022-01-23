@@ -107,5 +107,13 @@ namesOf ( L _ ( ValD _ FunBind{ fun_id } ) ) =
   [ unLoc fun_id ]
 namesOf ( L _ ( ValD _ VarBind{ var_id } ) ) =
   [ var_id ]
+namesOf ( L _ ( KindSigD _ ( StandaloneKindSig _ ( L _ name ) _ ) ) ) =
+  [ name ]
+namesOf ( L _ ( TyClD _ ( DataDecl _ ( L _ name ) _ _ _ ) ) ) =
+  [ name ]
+namesOf ( L _ ( TyClD _ ( FamDecl _ ( FamilyDecl _ _ ( L _ name ) _ _ _ _ ) ) ) ) =
+  [ name ]
+namesOf ( L _ ( TyClD _ ( SynDecl _ ( L _ name ) _  _ _ ) ) ) =
+  [ name ]
 namesOf _ =
   []
