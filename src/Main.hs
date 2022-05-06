@@ -13,6 +13,8 @@ import Data.Data
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Parsers ( parseModuleFromString )
 import qualified Options.Applicative as OptParse
+import qualified Data.Text as T
+import qualified Data.Text.IO as T
 
 import CircuitHub.HsFormat
 import CircuitHub.HsFormat.IE
@@ -76,7 +78,7 @@ mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> d
 
   mapM_ putStrLn logEntries
 
-  oldSrc <- readFile inputFilePath
+  oldSrc <- T.unpack <$> T.readFile inputFilePath
   let newSrc = exactPrint formatted anns' 
 
   when (oldSrc /= newSrc) $

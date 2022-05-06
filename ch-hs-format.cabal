@@ -13,7 +13,8 @@ executable ch-hs-format
     containers,
     ghc,
     ghc-exactprint,
-    optparse-applicative
+    optparse-applicative,
+    text
   main-is:
     Main.hs
   other-modules:
