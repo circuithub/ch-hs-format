@@ -8,7 +8,7 @@ module Main where
 
 import Control.Applicative
 import Data.Foldable ( for_ )
-import Control.Monad ( (>=>) )
+import Control.Monad ( (>=>), when )
 import Data.Data
 import Language.Haskell.GHC.ExactPrint
 import Language.Haskell.GHC.ExactPrint.Parsers ( parseModuleFromString )
@@ -76,7 +76,11 @@ mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> d
 
   mapM_ putStrLn logEntries
 
-  writeFile inputFilePath ( exactPrint formatted anns' )
+  oldSrc <- readFile inputFilePath
+  let newSrc = exactPrint formatted anns' 
+
+  when (oldSrc /= newSrc) $
+    writeFile inputFilePath newSrc
 
 
 formatTopDown :: forall a. Data a => Formatter a
