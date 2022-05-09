@@ -1,5 +1,6 @@
 {-# language ApplicativeDo #-}
 {-# language GADTs #-}
+{-# language LambdaCase #-}
 {-# language NamedFieldPuns #-}
 {-# language RecordWildCards #-}
 {-# language ScopedTypeVariables #-}
@@ -68,21 +69,24 @@ mainWith Arguments{ inputFilePaths = [] } =  do
   putStr ( exactPrint formatted anns' )
 
 mainWith Arguments{ inputFilePaths } = for_ inputFilePaths $ \inputFilePath -> do
-  ( anns, parsedSource ) <-
-    parseModule inputFilePath
-      >>= either ( \_ -> fail "Failed to parse" ) return
+  parseModule inputFilePath >>= \case
+    Left errors -> do
+      putStrLn $ "Failed to parse " <> inputFilePath <> ":"
+      for_ errors $ \e ->
+        putStrLn $ "  - " <> show e
 
-  let
-    ( formatted, ( anns', _ ), logEntries ) =
-      runTransform anns ( formatTopDown parsedSource )
+    Right ( anns, parsedSource ) -> do
+      let
+        ( formatted, ( anns', _ ), logEntries ) =
+          runTransform anns ( formatTopDown parsedSource )
 
-  mapM_ putStrLn logEntries
+      mapM_ putStrLn logEntries
 
-  oldSrc <- T.unpack <$> T.readFile inputFilePath
-  let newSrc = exactPrint formatted anns' 
+      oldSrc <- T.unpack <$> T.readFile inputFilePath
+      let newSrc = exactPrint formatted anns'
 
-  when (oldSrc /= newSrc) $
-    writeFile inputFilePath newSrc
+      when (oldSrc /= newSrc) $
+        writeFile inputFilePath newSrc
 
 
 formatTopDown :: forall a. Data a => Formatter a
